@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/69b80fab-74ca-45a5-a556-bc92bb1a8753/microsoft.web/sites/subscriptions/69b80fab-74ca-45a5-a556-bc92bb1a8753/resourceGroups/Kolonisatiebot/providers/Microsoft.Web/sites/Kolonisatiebot",
+    "appService.deploySubpath": "."
+}
