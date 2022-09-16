@@ -48,12 +48,23 @@ exports.play = (client, guild) => {
     //subscribe to the player
     connection.subscribe(player);
 
+    //set the song to playing
+    client.musicQueue[guild.id][0].playing = true;
+
+    connection.skip = () => {
+        player.stop();
+        
+    }
+
+    client.musicConnections.set(guild.id, connection);
+
     //when the song ends
     player.on(AudioPlayerStatus.Idle, () => {
         client.musicQueue[guild.id].shift();
         //if there are more songs in the queue
         if(client.musicQueue[guild.id].length > 0) {
             //play the next song
+            
             this.play(client, guild);
         } else {
             //leave the voice channel

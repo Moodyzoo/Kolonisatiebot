@@ -14,12 +14,15 @@ module.exports = {
         const connection = client.musicConnections?.get(interaction.guild.id);
         if(!connection) return interaction.reply({ content: `Er speelt geen muziek!` });
 
+        client.musicConnections.get(interaction.guild.id).skip();
 
-        
-        connection.destroy();
-        client.musicConnections.delete(guild.id);
-        client.musicQueue[guild.id].shift();
-        interaction.reply({ content: `Muziek gestopt!` });
+        //check id there are more songs in the queue
+        if(client.musicConnections.get(interaction.guild.id).queue.length > 0) {
+                interaction.reply({ content: `Geskipt naar het volgende nummer!` });
+                }
+        else {
+                interaction.reply({ content: `Er zijn geen nummers meer in de queue. Muziek is gestopt!` });
+                }
 
 	}
 };

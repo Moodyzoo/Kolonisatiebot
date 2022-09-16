@@ -28,7 +28,8 @@ module.exports = async (client, url, interaction) => {
         title: info.videoDetails.title,
         thumbnail: info.videoDetails.thumbnails[0].url,
         duration: info.videoDetails.lengthSeconds,
-        requestor: interaction.user.tag
+        requestor: interaction.user.tag,
+        playing: false
     }
 
     client.musicQueue[guild.id].push(track);
