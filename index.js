@@ -12,6 +12,15 @@ const client = new Client({
 	partials: [Partials.Channel, Partials.Message, Partials.User, Partials.GuildMember, Partials.Reaction] 
 });
 
+//set client.testmode to true if the commandline argument test is given
+client.testmode = process.argv.includes('test');
+
+console.log(process.argv);
+
+if(client.testmode) {
+	console.log("Testmode is enabled!");
+}
+
 const config = require('./config.json');
 require('dotenv').config() // remove this line if you are using replit
 const fs = require('fs');
