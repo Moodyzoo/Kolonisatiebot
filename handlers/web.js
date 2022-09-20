@@ -7,7 +7,7 @@ module.exports = (client) => {
         res.send('Hello World!');
     })
 
-    client.app.listen(8080, () => {
+    client.app.listen(3000, () => {
         console.log('Example app listening at http://localhost:8080');
     })
 
