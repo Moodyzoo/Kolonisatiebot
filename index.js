@@ -33,9 +33,16 @@ client.commands = new Collection()
 client.buttons = new Collection()
 client.aliases = new Collection()
 client.slashCommands = new Collection();
+client.selectmenus = new Collection()
+client.modals = new Collection()
 client.prefix = config.prefix
 
 module.exports = client;
+
+client.isAdmin = (member) => {
+	return config.admin.includes(member.id);
+}
+
 
 
 fs.readdirSync('./handlers').forEach((handler) => {

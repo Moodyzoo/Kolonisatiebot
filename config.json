@@ -3,5 +3,9 @@
 	"verifyRole": "1016704626956963870",
 	"messages": {
 		"COOLDOWN_MESSAGE": "You are on `<duration>` cooldown!"
-	}
+	},
+	"admin": [
+		"276406134741401600",
+		"485464641745453078"
+	]
 }
