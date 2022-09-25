@@ -1,6 +1,6 @@
 //send embed with button to join roulette
 const { ActionRowBuilder, ButtonBuilder, EmbedBuilder, ApplicationCommandType } = require("discord.js");
-
+const fs = require('fs');
 module.exports = {
     name: 'initgame',
     description: 'Starts a roulette game',
@@ -9,40 +9,45 @@ module.exports = {
         {
             name: 'game',
             description: 'The game to start',
-            type: 4,
+            type: 3,
             required: true,
             autocomplete: true
         }
     ],
     autocomplete: (interaction, choices) => {
-        const data = ['roulette', 'blackjack'];
-        
-        data.forEach(game => {
-            choices.push({
-                name: `${game}`,
-                value: `${game}`
-            });
-        });
+        //get the games without the .js extension
+        const games = fs.readdirSync('./slashCommands/casino/initgame').map(file => file.replace('.js', ''));
+        //map the games to the choices
+        choices = games.map(game => ({name: game, value: game}));
+
+    
         interaction.respond(choices).catch(console.error);
     },
     run: async (client, interaction) => {
         if(interaction.isAutocomplete()) return console.log("Autocomplete");
-        const row = new ActionRowBuilder()
-            .addComponents(
-                new ButtonBuilder()
-                    .setCustomId('roulette_button')
-                    .setLabel('Join')
-                    .setStyle(3)
-            );
 
-        //create embed
-        const embed = new EmbedBuilder()
-            .setTitle('Roulette')
-            .setDescription('Click the button to join the roulette game')
-            .setColor('#00ff00')
-            
-            
+        //only allow bot admins to use this command with client.isAdmin(interaction.user.id)
+        if(!client.isAdmin(interaction.user)) return interaction.reply({ content: 'You don\'t have permission to use this command!', ephemeral: true });
 
-        interaction.channel.send({ content: 'Roulette test!', components: [row] });
+
+        const game = interaction.options.getString('game');
+
+        
+        
+            //check if the file exists in /initgame with fs
+            if(fs.existsSync(`./slashCommands/casino/initgame/${game}.js`)) {
+                //if it does, require it
+                const gameFile = require(`./initgame/${game}.js`);
+                //run the run function
+                gameFile.run(client, interaction);
+                //reply with a message
+                interaction.reply({content: `Starting ${game}...`, ephemeral: true});
+
+            } else {
+                //return ephemeral message if the file doesn't exist (game does not exist)
+                interaction.reply({ content: 'That game does not exist!', ephemeral: true });
+            }
+
+        
     }
 }

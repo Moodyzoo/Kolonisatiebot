@@ -5,31 +5,25 @@ module.exports = {
     permissions: [],
     run: async (client, interaction) => {
 
-        /*
-        //create a modal
-        const modal = new ModalBuilder()
-            .setTitle('Roulette')
-            .setCustomId('roulette_modal')
+        //get value of the select menu
 
-        //create a multi-select menu with 3 colours (red, green, black)
-        
+        const selectMenu = interaction.values[0];
 
-        //add the menu to the modal
-            
-            //create a number input
-        const numberInput = new TextInputBuilder()
-            .setCustomId('number_input')
-            .setPlaceholder('Money to bet') 
+        if(!client.casino.config.roulette.users[interaction.user.id]) {
+            client.casino.config.roulette.users[interaction.user.id] = {
+                moneyBet: 0,
+                colourBet: selectMenu
+            }
+        }
 
-        //add the number input to the modal
-        modal.addComponents(new ActionRowBuilder().addComponents(menu))
-        modal.addComponents(new ActionRowBuilder().addComponents(numberInput))
+        //return if the user has already bet
+        if(client.casino.config.roulette.users[interaction.user.id].moneyBet > 0) return interaction.reply({ content: "You have already bet!", ephemeral: true });
+        //return if the gam is already started
+        if(client.casino.config.roulette.ingame) return interaction.reply({ content: "The game has already started!", ephemeral: true });
 
+        client.casino.config.roulette.users[interaction.user.id].colourBet = selectMenu;
 
-        //send the modal
-        interaction.showModal(modal);
-
-        */
+        client.casino.save();
 
         const modal = new ModalBuilder()
             .setCustomId('money_bet')
@@ -41,8 +35,9 @@ module.exports = {
         // Create the text input components
 
         const numberInput = new TextInputBuilder()
-            .setCustomId('number_input')
+            .setCustomId('money_bet')
             .setLabel('Money to bet')
+            .setMaxLength(1000)
             .setStyle(TextInputStyle.Short)
 
 
