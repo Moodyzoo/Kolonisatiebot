@@ -61,6 +61,13 @@ module.exports = (client) => {
         timer: false,
         message: client.casino.config.roulette.message ? client.casino.config.roulette.message : {},
     }
+
+    client.casino.config.speedsmash = {
+        users: {},
+        timer: false,
+        message: client.casino.config.speedsmash?.message ? client.casino.config.speedsmash.message : {},
+    }
+
     client.casino.save();
 
 
